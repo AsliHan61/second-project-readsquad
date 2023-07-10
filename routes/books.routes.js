@@ -15,8 +15,16 @@ router.get('/books',(req, res)=> {
 });
 
 
+router.get('/books/create', (req, res) => res.render('books/new.books.hbs'));
+router.post('/books/create', (req, res, next) => {
+    console.log(req.body);
+    const { title, author, description, rating } = req.body;
 
-
+    Books.create({ title, author, description, rating })
+    .then(bookFromDB => console.log('New book created: ${bookFromDB.title}.'))
+    .then(() => res.redirect('/books')) 
+    .catch(error => next(error));
+});
 
 
 module.exports = router;
